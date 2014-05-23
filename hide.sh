@@ -13,6 +13,6 @@ fi
 
 for file in "$@";do
     if [ ${file:0:1} != "." ];then
-	mv $file .$file
+	mv "$file" ".$file"
     fi
 done 
