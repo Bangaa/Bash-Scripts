@@ -25,7 +25,7 @@ get_file_begin ()
 
 if [ $# -lt 1 ];then
     echo "usage: hide <file> ..." 
-    return
+	exit 1
 fi
 
 for file in "$@";do
