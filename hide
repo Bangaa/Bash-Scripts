@@ -6,36 +6,44 @@
 #
 #  - Desocultar (mostrar)
 
-get_file_begin ()
+USAGE='usage: hide <file> ...'
+
+get_dir ()
 {
-    if [ $# -lt 1 ];then
-	exit 1
-    fi
-
-    (( INDEX = 0 ))
-    for (( i=${#1} ; i>=1; i-- ));do
-	if [ "${1:i-1:1}" == "/" ];then
-	    (( INDEX = $i ))
-	    break
+	if [[ $# -eq 0 ]];then
+		echo 'Escriba el nombre de un archivo' >&2
+		exit 1
 	fi
-    done
+	(( limite = ${#1}-1 ))
 
-    echo $INDEX
+	for (( i=$limite ; i>0 ; i-- ));do
+		if [[ "${1:i-1:1}" == "/" ]];then
+			echo "${1:0:i}"
+			exit 0
+		fi
+	done
+
+	echo
 }
 
-if [ $# -lt 1 ];then
-    echo "usage: hide <file> ..." 
+if [ $# -eq 0 ];then
+    echo $USAGE
 	exit 1
 fi
 
-for file in "$@";do
-    (( SPLIT_AT= $(get_file_begin $file) ))
-    DIR=${file:0:SPLIT_AT}
-    FILENAME=${file:SPLIT_AT}
+(( OCULTADOS=0 ))
 
-    if ! [ -e $file ];then
-	echo "error: No existe el fichero o directorio \"$file\" " >&2
+for file in "$@";do
+	DIR=`get_dir "$1"`
+	FILENAME="${1:${#DIR}}"
+
+    if ! [[ -e $file ]];then
+		echo "error: No existe el fichero o directorio «$file»" >&2
     elif [ ${FILENAME:0:1} != "." ];then
-	mv "$DIR""$FILENAME" "$DIR"."$FILENAME"
+		mv "$DIR""$FILENAME" "$DIR"."$FILENAME"
+		(( OCULTADOS++ ))
     fi
 done 
+
+echo "$OCULTADOS elementos ocultados."
+exit 0
