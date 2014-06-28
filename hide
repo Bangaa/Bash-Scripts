@@ -34,8 +34,8 @@ fi
 (( OCULTADOS=0 ))
 
 for file in "$@";do
-	DIR=`get_dir "$1"`
-	FILENAME="${1:${#DIR}}"
+	DIR=`get_dir "$file"`
+	FILENAME="${file:${#DIR}}"
 
     if ! [[ -e $file ]];then
 		echo "error: No existe el fichero o directorio «$file»" >&2
