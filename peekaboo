@@ -1,12 +1,6 @@
 #!/bin/bash
-#
-# Oculta uno o mas archivos. Los comodines estan aceptados
-#
-# Por implementar:
-#
-#  - Desocultar (mostrar)
 
-USAGE='usage: hide FILE...'
+USAGE='usage: peekaboo FILE...'
 
 get_dir ()
 {
@@ -31,7 +25,7 @@ if [ $# -eq 0 ];then
 	exit 1
 fi
 
-(( OCULTADOS=0 ))
+(( MOSTRADOS=0 ))
 
 for file in "$@";do
 	DIR=`get_dir "$file"`
@@ -39,11 +33,11 @@ for file in "$@";do
 
     if ! [[ -e $file ]];then
 		echo "error: No existe el fichero o directorio «$file»" >&2
-    elif [ ${FILENAME:0:1} != "." ];then
-		mv "$DIR""$FILENAME" "$DIR"."$FILENAME"
-		(( OCULTADOS++ ))
+    elif [ ${FILENAME:0:1} == "." ];then
+		mv "$DIR""$FILENAME" "$DIR""${FILENAME:1}"
+		(( MOSTRADOS++ ))
     fi
 done 
 
-echo "$OCULTADOS elementos ocultados."
+echo "$MOSTRADOS elementos revelados"
 exit 0
