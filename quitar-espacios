@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Quita los espacios en el nombre de los archivos especificados
+
+(( procesados = 0 ))
+
+for archivo in "$@"
+do
+	nuevo=${archivo//\ /_}
+
+	if  mv "$archivo" $nuevo 2>/dev/null ;then
+		(( procesados++ )) 
+	else 
+		echo "No se pudo procesar «$nuevo»" 1>&2
+	fi
+
+done
+
+echo $procesados archivos ahora sin espacios
