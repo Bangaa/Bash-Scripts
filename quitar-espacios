@@ -11,7 +11,7 @@ do
 	if  mv "$archivo" $nuevo 2>/dev/null ;then
 		(( procesados++ )) 
 	else 
-		echo "No se pudo procesar «$nuevo»" 1>&2
+		echo "No se hace nada para «$nuevo»."
 	fi
 
 done
