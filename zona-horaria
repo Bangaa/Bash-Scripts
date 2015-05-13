@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# [es]: Script que muestra la zona horaria del computador
+# [en]: Script that print the computer's time zone.
+# Copyright (C) 2015 Ian Mejias
+#
+# This program is free software: you can redistribute it and/or modify it under 
+# the terms of the GNU General Public License as published by the Free Software 
+# Foundation, either version 3 of the License, or (at your option) any later 
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT 
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more 
+# details.
+#
+# You should have received a copy of the GNU General Public License along with 
+# this program.  If not, see <http://www.gnu.org/licenses/>.
+
+let dia_actual=`date +%j`
+let dia_utc=`date +%j --utc`
+let hora_actual=`date +%H`
+let hora_utc=`date +%H --utc`
+
+if [[ "$dia_actual" -lt "$dia_utc" ]];then
+	let hora_utc="$hora_utc + 24"
+fi
+
+let hh="$hora_actual - $hora_utc"
+
+if [[ "$hh" -gt 0 ]];then
+	hh=+"$hh"
+fi
+
+let min=`date +%M`
+let min_utc=`date +%M --utc`
+let mm="$min_utc - $min" 
+
+printf "UTC%03i:%02i\n" $hh $mm
