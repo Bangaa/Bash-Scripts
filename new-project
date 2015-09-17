@@ -14,14 +14,26 @@
 
 make_makefile() {
 
+plantilla='''CC =
+CFLAGS =
+
+PROGNAME =
+OBJ =
+OBJDIR = build/obj
+VPATH = src/
+
+all: $(PROGNAME)
+
+$(PROGNAME): $(addprefix $(OBJDIR)/, $(OBJ))
+	$(CC) -o $@ $^ $(CFLAGS)
+
+$(OBJDIR):
+	mkdir -p $@
+'''
+
 	if [ -d $1 ] || [ $1 == "" ];then
 
-		echo -e "CC =" 			 		 > $1/Makefile
-		echo -e "CFLAGS =\n" 			>> $1/Makefile
-		echo -e "PROGNAME ="			>> $1/Makefile
-		echo -e "OBJ ="					>> $1/Makefile
-		echo -e "OBJDIR = build/obj"	>> $1/Makefile
-		echo -e "VPATH =\n"				>> $1/Makefile
+		echo "$plantilla" > $1/Makefile
 
 		return 0
 	else
