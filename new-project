@@ -14,24 +14,46 @@
 
 make_makefile() {
 
-plantilla='''CC =
+	if [ -d $1 ] || [ $1 == "" ];then
+
+plantilla="""# Makefile creado automaticamente el $(date +%d/%m/%y) por el script 
+# 'new-project':
+# https://github.com/Bangaa/Bash-Scripts/blob/master/new-project
+
+
+# Aqui se deben definir el compilador, la extencion que tiene el codigo fuente 
+# y las flags de compilacion (como opciones de optimizacion de codigo, los 
+# warnings que desea que se muestren, etc), respectivamente.
+CC     =
+EXT    =
 CFLAGS =
 
-PROGNAME =
+PROGNAME = $1
 OBJ =
-OBJDIR = build/obj
+OBJDIR = obj
 VPATH = src/
 
-all: $(PROGNAME)
+.PHONY: clean all
 
-$(PROGNAME): $(addprefix $(OBJDIR)/, $(OBJ))
-	$(CC) -o $@ $^ $(CFLAGS)
+all: \$(PROGNAME)
 
-$(OBJDIR):
-	mkdir -p $@
-'''
+# Se compila el ejecutable
+\$(PROGNAME): \$(addprefix \$(OBJDIR)/, \$(OBJ))
+	\$(CC) -o \$@ \$^ \$(CFLAGS)
 
-	if [ -d $1 ] || [ $1 == "" ];then
+# Se crea el directorio de salida del código objeto
+\$(OBJDIR):
+	mkdir -p \$@
+
+# Compilación del código objeto
+\$(OBJDIR)/%.o: %.\$(EXT) | \$(OBJDIR)
+	\$(CC) \$(CFLAGS) -o \$@ -c \$<
+
+# Para empezar de cero
+clean:
+	rm -f \$(PROGNAME)
+	rm -rf \$(OBJDIR)
+"""
 
 		echo "$plantilla" > $1/Makefile
 
